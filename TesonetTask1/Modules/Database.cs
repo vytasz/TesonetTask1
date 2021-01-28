@@ -15,6 +15,19 @@ namespace TesonetTask1.Modules
         private readonly string DataSource = "sqlLiteDb.db";
         Logger logger = Logger.GetInstance();
 
+        public Database()
+        {
+            var path = "Data Source=" + DataSource;
+            using (var connection = new SqliteConnection(path))
+            {
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = 
+                    "CREATE TABLE IF NOT EXISTS Servers( name TEXT NOT NULL, distance INTEGER NOT NULL, PRIMARY KEY(name))";
+                command.ExecuteNonQuery();
+            }
+        }
+
         public DataTable Read(string tableName, List<WhereArgs> args = null)
         {
             var path = "Data Source=" + DataSource;
